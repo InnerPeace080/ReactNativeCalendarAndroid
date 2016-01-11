@@ -78,11 +78,13 @@ Calendar.propTypes = {
   currentDate: PropTypes.arrayOf(PropTypes.oneOfType([ PropTypes.string, PropTypes.number ])),
   selectionMode: PropTypes.oneOf(SELECTION_MODES),
   selectionColor: colorType,
-  selectedDates: PropTypes.arrayOf(PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]))
+  selectedDates: PropTypes.arrayOf(PropTypes.oneOfType([ PropTypes.string, PropTypes.number ])),
+  titleMonths :PropTypes.array
 };
 
 Calendar.defaultProps = {
   topbarVisible: true
+  // titleDateFormat: 'MMMM yyyy',
 }
 
 module.exports = Calendar;

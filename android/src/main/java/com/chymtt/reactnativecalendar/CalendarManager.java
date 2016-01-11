@@ -13,6 +13,7 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,6 +23,11 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import android.util.Log;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by Chym on 29/11/15.
@@ -180,6 +186,56 @@ public class CalendarManager extends SimpleViewManager<Calendar> {
             view.setDateSelected(date, true);
         }
     }
+
+    @ReactProp(name = "titleMonths")
+    public void setTitleMonths(Calendar view, ReadableArray titleMonths) {
+      Log.v("setTitleMonths","setTitleMonths");
+      if(titleMonths.size()<12){
+        String fullClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+        String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+
+        Log.w(className + "." + methodName + "():" + lineNumber, "titleMonths array not enough size, size is " + titleMonths.size() );
+
+      }
+
+      CharSequence[] monthLabels = new CharSequence[12];
+      for(int i = 0; i<12; i++){
+        if(i<titleMonths.size()){
+          monthLabels[i] = titleMonths.getString(i);
+        }
+        else{
+          monthLabels[i] = "unknown";
+        }
+      }
+
+      view.setTitleMonths(monthLabels);
+
+      // DateFormatTitleFormatter dateFormat = new DateFormatTitleFormatter(
+      //   new SimpleDateFormat(
+      //           "MMMM - yyyy", Locale.getDefault()
+      //   )
+      // );
+      // view.setTitleFormatter(dateFormat);
+
+
+    }
+
+
+    // @ReactProp(name = "titleDateFormat")
+    // public void setTitleDateFormat(Calendar view, String titleDateFormat) {
+    //   Log.v("setTitleDateFormat","setTitleDateFormat");
+    //   Log.d("setTitleDateFormat",titleDateFormat);
+    //   String titleDateFormatTemp = titleDateFormat;
+    //   DateFormatTitleFormatter dateFormat = new DateFormatTitleFormatter(
+    //     new SimpleDateFormat(
+    //             "MMMM - yyyy", Locale.getDefault()
+    //     )
+    //   );
+    //   view.setTitleFormatter(dateFormat);
+    // }
+
 
     private int getFirstDayOfWeekFromString(String firstDayOfWeek) {
         if (firstDayOfWeek.equals("monday")) {
