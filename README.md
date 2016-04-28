@@ -6,54 +6,77 @@ A simple material-themed calendar for react native android
 
 ## Installation Android
 1. `npm install --save react-native-calendar-android`
-2. In `android/setting.gradle`
 
-```gradle
-...
-include ':ReactNativeCalendarAndroid', ':app'
-project(':ReactNativeCalendarAndroid').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-calendar-android/android')
-```
+_Note_: Since react-native-calendar-android@0.0.3, you should use react-native@0.19.0 and above
+
+2. In `android/settings.gradle`
+
+    ```gradle
+    ...
+    include ':ReactNativeCalendarAndroid', ':app'
+    project(':ReactNativeCalendarAndroid').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-calendar-android/android')
+    ```
 
 3. In `android/app/build.gradle`
 
-```gradle
-...
-dependencies {
+    ```gradle
     ...
-    compile project(':ReactNativeCalendarAndroid')
-}
-```
+    dependencies {
+        ...
+        compile project(':ReactNativeCalendarAndroid')
+    }
+    ```
 
-4. register module (in MainActivity.java)
+4. Register module (in MainActivity.java)
 
-```java
-import com.chymtt.reactnativecalendar.CalendarPackage; // <----- import
+    4.1. With RN < 0.19.0
 
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
-  ......
+        ```java
+        import com.chymtt.reactnativecalendar.CalendarPackage; // <----- import
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    mReactRootView = new ReactRootView(this);
+        public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+          ......
 
-    mReactInstanceManager = ReactInstanceManager.builder()
-      .setApplication(getApplication())
-      .setBundleAssetName("index.android.bundle")
-      .setJSMainModuleName("index.android")
-      .addPackage(new MainReactPackage())
-      .addPackage(new CalendarPackage())              // <------ add here
-      .setUseDeveloperSupport(BuildConfig.DEBUG)
-      .setInitialLifecycleState(LifecycleState.RESUMED)
-      .build();
+          @Override
+          protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mReactRootView = new ReactRootView(this);
 
-    mReactRootView.startReactApplication(mReactInstanceManager, "ExampleRN", null);
+            mReactInstanceManager = ReactInstanceManager.builder()
+              .setApplication(getApplication())
+              .setBundleAssetName("index.android.bundle")
+              .setJSMainModuleName("index.android")
+              .addPackage(new MainReactPackage())
+              .addPackage(new CalendarPackage())              // <------ add here
+              .setUseDeveloperSupport(BuildConfig.DEBUG)
+              .setInitialLifecycleState(LifecycleState.RESUMED)
+              .build();
 
-    setContentView(mReactRootView);
-  }
-  ......
-}
-```
+            mReactRootView.startReactApplication(mReactInstanceManager, "ExampleRN", null);
+
+            setContentView(mReactRootView);
+          }
+          ......
+        }
+        ```
+
+    4.2. With RN >= 0.19.0
+
+        ```java
+        import com.chymtt.reactnativecalendar.CalendarPackage; // <----- import
+
+        public class MainActivity extends ReactActivity {
+            ...
+
+            @Override
+            protected List<ReactPackage> getPackages() {
+              return Arrays.<ReactPackage>asList(
+                new MainReactPackage(),
+                new CalendarPackage() // <------ add here
+              );
+            }
+        }
+        ```
 
 ## Usage
 
@@ -143,7 +166,7 @@ Called when user select/deselect a date. The returned data is { date: 'yyyy/mm/d
 
 ## Questions or suggestions?
 
-Feel free to [open an issue](https://github.com/chymtt/ReactNativeCalendarAndroid/issues)  
+Feel free to [open an issue](https://github.com/chymtt/ReactNativeCalendarAndroid/issues)
 [Pull requests](https://github.com/chymtt/ReactNativeCalendarAndroid/pulls) are also welcome
 
 ## Credit
